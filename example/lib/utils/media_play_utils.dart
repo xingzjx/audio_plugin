@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:audio_plugin/audio_plugin.dart';
 
 class MediaPlayUtils {
@@ -9,6 +11,8 @@ class MediaPlayUtils {
       audioPlayer = new AudioPlayer();
     }
     await audioPlayer.playList(url);
+
+    Uint8List byteArray = null;
 
   }
 

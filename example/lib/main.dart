@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:audio_plugin/audio_plugin.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 void main() => runApp(MyApp());
 
@@ -20,12 +21,18 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
+
+  }
+
+  Future<ByteData> loadAsset() async {
+    return await rootBundle.load('assets/1.mp3');
   }
 
 
   Future<void> playAudio() async {
-    String url = await FileUtils.getPathByName(AudioConstants.GEAR_PROBLEM_1);
     List<String> list = new List();
+    list.add("CASE.mp3");
     list.add(await FileUtils.getPathByName("username/CODY.mp3"));
     list.add(await FileUtils.getPathByName("username/ALEX.mp3"));
     list.add(await FileUtils.getPathByName("username/ABEL.mp3"));

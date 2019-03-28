@@ -1,6 +1,7 @@
 package com.xing.audioplugin;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -25,6 +26,7 @@ public class AudioPlugin implements MethodCallHandler {
   private final Handler handler = new Handler();
   private MediaPlayer mediaPlayer;
   private List<String> resources;
+  private Context context;
 
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), ID);
@@ -33,6 +35,7 @@ public class AudioPlugin implements MethodCallHandler {
 
   private AudioPlugin(Registrar registrar, MethodChannel channel) {
     this.channel = channel;
+    context = registrar.activeContext();
     channel.setMethodCallHandler(this);
     Context context = registrar.context().getApplicationContext();
     this.am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
@@ -116,7 +119,12 @@ public class AudioPlugin implements MethodCallHandler {
       mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
       try {
-        mediaPlayer.setDataSource(url);
+        if(url.startsWith("/") || url.startsWith("http")) {
+          mediaPlayer.setDataSource(url);
+        } else {// assets处理
+          AssetFileDescriptor fd = context.getAssets().openFd(resources.get(0));
+          mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
+        }
       } catch (IOException e) {
         Log.w(ID, "Invalid DataSource", e);
         channel.invokeMethod("audio.onError", "Invalid Datasource");
