@@ -6,14 +6,11 @@ class MediaPlayUtils {
 
   static AudioPlayer audioPlayer;
 
-  static Future<void> play(List<String> url) async {
+  static Future<void> play(var url) async {
     if(audioPlayer==null) {
       audioPlayer = new AudioPlayer();
     }
     await audioPlayer.playList(url);
-
-    Uint8List byteArray = null;
-
   }
 
   static Future<void> stop() async {

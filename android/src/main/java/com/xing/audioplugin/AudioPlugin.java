@@ -35,7 +35,7 @@ public class AudioPlugin implements MethodCallHandler {
 
   private AudioPlugin(Registrar registrar, MethodChannel channel) {
     this.channel = channel;
-    context = registrar.activeContext();
+    context = registrar.context();
     channel.setMethodCallHandler(this);
     Context context = registrar.context().getApplicationContext();
     this.am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
@@ -122,12 +122,17 @@ public class AudioPlugin implements MethodCallHandler {
         if(url.startsWith("/") || url.startsWith("http")) {
           mediaPlayer.setDataSource(url);
         } else {// assets处理
-          AssetFileDescriptor fd = context.getAssets().openFd(resources.get(0));
+          AssetFileDescriptor fd = context.getAssets().openFd(url);
           mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
         }
       } catch (IOException e) {
         Log.w(ID, "Invalid DataSource", e);
+        stop();
         channel.invokeMethod("audio.onError", "Invalid Datasource");
+        if(resources!=null && resources.size()>1) {
+            resources.remove(0);
+            play(resources.get(0));
+        }
         return;
       }
 
@@ -152,6 +157,7 @@ public class AudioPlugin implements MethodCallHandler {
               channel.invokeMethod("audio.onComplete", null);
               resources = null;
             } else {
+              stop();
               play(resources.get(0));
             }
           } else {
@@ -169,16 +175,7 @@ public class AudioPlugin implements MethodCallHandler {
         }
       });
     } else {
-      try {
-        mediaPlayer.reset();
-        mediaPlayer.setDataSource(url);
-      } catch (IOException e) {
-        Log.w(ID, "Invalid DataSource", e);
-        channel.invokeMethod("audio.onError", "Invalid Datasource");
-        return;
-      }
-      mediaPlayer.prepareAsync();
-      // mediaPlayer.start();
+      mediaPlayer.start();
       channel.invokeMethod("audio.onStart", mediaPlayer.getDuration());
     }
     handler.post(sendData);
