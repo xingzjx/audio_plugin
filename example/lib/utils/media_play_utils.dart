@@ -10,11 +10,7 @@ class MediaPlayUtils {
     if(audioPlayer==null) {
       audioPlayer = new AudioPlayer();
     }
-    if(url is String) {
-      await audioPlayer.play(url);
-    } else if(url is List) {
-      await audioPlayer.playList(url);
-    }
+    await audioPlayer.play(url);
   }
 
   static Future<void> stop() async {

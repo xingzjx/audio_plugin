@@ -43,11 +43,12 @@ class AudioPlayer {
   }
 
   /// Play a given url.
-  Future<void> play(String url, {bool isLocal: false}) async =>
+  /// eg:
+  /// 服务器地址：http://ra01.sycdn.kuwo.cn/resource/n3/32/56/3260586875.mp3
+  /// assets下文件： CASE.mp3
+  /// scard下文件：/sdcard/test/test.mp3
+  Future<void> play(var url, {bool isLocal: false}) async =>
       await _channel.invokeMethod('play', {'url': url, 'isLocal': isLocal});
-
-  Future<void> playList(List<String> url, {bool isLocal: false}) async =>
-      await _channel.invokeMethod('playList', {'url': url, 'isLocal': isLocal});
 
   /// Pause the currently playing stream.
   Future<void> pause() async => await _channel.invokeMethod('pause');

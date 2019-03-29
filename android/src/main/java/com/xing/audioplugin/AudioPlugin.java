@@ -45,13 +45,12 @@ public class AudioPlugin implements MethodCallHandler {
   public void onMethodCall(MethodCall call, MethodChannel.Result response) {
     switch (call.method) {
       case "play":
-        play(call.argument("url").toString());
-        response.success(null);
-        break;
-      case "playList":
-        List<String> list = (List<String>) call.argument("url");
-        // Log.w(ID, "playList:", list + "");
-        play((List<String>) call.argument("url"));
+        Object object = call.argument("url");
+        if(object instanceof String) {
+          play(object.toString());
+        } else if(object instanceof List) {
+          play((List<String>) object);
+        }
         response.success(null);
         break;
       case "pause":
