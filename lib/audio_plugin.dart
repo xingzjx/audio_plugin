@@ -42,7 +42,7 @@ class AudioPlayer {
     _channel.setMethodCallHandler(_audioPlayerStateChange);
   }
 
-  /// Play a given url.
+  /// url可以是List<String>和String类型
   /// eg:
   /// 服务器地址：http://ra01.sycdn.kuwo.cn/resource/n3/32/56/3260586875.mp3
   /// assets下文件： CASE.mp3
