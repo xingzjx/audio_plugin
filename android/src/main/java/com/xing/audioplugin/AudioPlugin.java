@@ -14,7 +14,6 @@ import java.util.List;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 
@@ -38,6 +37,7 @@ public class AudioPlugin implements MethodCallHandler {
     context = registrar.context();
     channel.setMethodCallHandler(this);
     Context context = registrar.context().getApplicationContext();
+    Utils.init(context);
     this.am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
   }
 
@@ -112,7 +112,7 @@ public class AudioPlugin implements MethodCallHandler {
   }
 
   private void play(String url) {
-    System.out.println("url======>" + url);
+    // System.out.println("url======>" + url);
     if (mediaPlayer == null) {
       mediaPlayer = new MediaPlayer();
       mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -148,17 +148,11 @@ public class AudioPlugin implements MethodCallHandler {
       mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener(){
         @Override
         public void onCompletion(MediaPlayer mp) {
-          if(resources!=null) {
+          if(resources != null && resources.size() > 0) {
             resources.remove(0);
-            System.out.println("======>" + resources);
-            if(resources.size()==0) {// 队列出完表示结束播放了
-              stop();
-              channel.invokeMethod("audio.onComplete", null);
-              resources = null;
-            } else {
-              stop();
-              play(resources.get(0));
-            }
+            // System.out.println("======>" + resources);
+            stop();
+            play(resources.get(0));
           } else {
             stop();
             channel.invokeMethod("audio.onComplete", null);
