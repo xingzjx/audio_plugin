@@ -41,10 +41,10 @@ FlutterMethodChannel *_channel;
     NSDictionary *methods = @{
                               @"play":
                                   ^{
-                                      NSObject *obj = call.arguments[@"url"];
+                                      NSMutableData *obj = call.arguments[@"url"];
                                       if([obj isKindOfClass:[NSString class]]) {
-                                          NSString *url = call.arguments[@"url"];
                                           int isLocal = [call.arguments[@"isLocal"] intValue];
+                                          NSString *url = call.arguments[@"url"];
                                           [self play:url isLocal:isLocal];
                                           result(nil);
                                       } else if([obj isKindOfClass:[NSArray class]]) {

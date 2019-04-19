@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.flutter.plugin.common.MethodCall;
@@ -24,7 +25,6 @@ public class AudioPlugin implements MethodCallHandler {
   private final AudioManager am;
   private final Handler handler = new Handler();
   private MediaPlayer mediaPlayer;
-  private List<String> resources;
   private Context context;
 
   public static void registerWith(Registrar registrar) {
@@ -37,7 +37,6 @@ public class AudioPlugin implements MethodCallHandler {
     context = registrar.context();
     channel.setMethodCallHandler(this);
     Context context = registrar.context().getApplicationContext();
-    Utils.init(context);
     this.am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
   }
 
@@ -46,11 +45,13 @@ public class AudioPlugin implements MethodCallHandler {
     switch (call.method) {
       case "play":
         Object object = call.argument("url");
+        List<String> resources = new ArrayList<>();
         if(object instanceof String) {
-          play(object.toString());
+          resources.add(String.valueOf(object));
         } else if(object instanceof List) {
-          play((List<String>) object);
+          resources = (List<String>) object;
         }
+        play(resources);
         response.success(null);
         break;
       case "pause":
@@ -106,13 +107,11 @@ public class AudioPlugin implements MethodCallHandler {
     }
   }
 
-  private void play(List<String> list)  {
-    this.resources = list;
-    play(resources.get(0));
-  }
-
-  private void play(String url) {
+  private void play(final List<String> resources) {
     // System.out.println("url======>" + url);
+    if(resources == null) return;
+    if(resources.size() == 0) return;
+    String url = resources.get(0);
     if (mediaPlayer == null) {
       mediaPlayer = new MediaPlayer();
       mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -130,7 +129,7 @@ public class AudioPlugin implements MethodCallHandler {
         channel.invokeMethod("audio.onError", "Invalid Datasource");
         if(resources!=null && resources.size()>1) {
             resources.remove(0);
-            play(resources.get(0));
+            play(resources);
         }
         return;
       }
@@ -148,13 +147,11 @@ public class AudioPlugin implements MethodCallHandler {
       mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener(){
         @Override
         public void onCompletion(MediaPlayer mp) {
+          stop();
           if(resources != null && resources.size() > 0) {
             resources.remove(0);
-            // System.out.println("======>" + resources);
-            stop();
-            play(resources.get(0));
+            play(resources);
           } else {
-            stop();
             channel.invokeMethod("audio.onComplete", null);
           }
         }
@@ -167,9 +164,6 @@ public class AudioPlugin implements MethodCallHandler {
           return true;
         }
       });
-    } else {
-      mediaPlayer.start();
-      channel.invokeMethod("audio.onStart", mediaPlayer.getDuration());
     }
     handler.post(sendData);
   }
