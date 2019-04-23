@@ -25,6 +25,7 @@ BOOL isPlaying = false;
 NSMutableSet *observers;
 NSMutableSet *timeobservers;
 FlutterMethodChannel *_channel;
+NSMutableArray *resources;
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     FlutterMethodChannel* channel = [FlutterMethodChannel
@@ -43,13 +44,14 @@ FlutterMethodChannel *_channel;
                                   ^{
                                       NSMutableData *obj = call.arguments[@"url"];
                                       if([obj isKindOfClass:[NSString class]]) {
-                                          int isLocal = [call.arguments[@"isLocal"] intValue];
+                                          // int isLocal = [call.arguments[@"isLocal"] intValue];
                                           NSString *url = call.arguments[@"url"];
-                                          [self play:url isLocal:isLocal];
+                                          [resources addObject:url];
                                           result(nil);
-                                      } else if([obj isKindOfClass:[NSArray class]]) {
-                                          
+                                      } else if([obj isKindOfClass:[NSMutableArray class]]) {
+                                          resources = call.arguments[@"url"];
                                       }
+                                      [self playList];
                                   },
                               @"pause":
                                   ^{
@@ -81,7 +83,14 @@ FlutterMethodChannel *_channel;
     }
 }
 
-- (void)play:(NSString*)url isLocal:(int)isLocal {
+- (void)playList {
+    if(resources!=nil && [resources count] > 0 ) {
+        NSString* url = [resources firstObject];
+        [self play:url];
+    }
+}
+
+- (void)play:(NSString*)url {
     if (![url isEqualToString:lastUrl]) {
         [playerItem removeObserver:self
                         forKeyPath:@"player.currentItem.status"];
@@ -90,20 +99,28 @@ FlutterMethodChannel *_channel;
             [[NSNotificationCenter defaultCenter] removeObserver:ob];
         }
         observers = nil;
-        
-        if (isLocal) {
-            playerItem = [[AVPlayerItem alloc] initWithURL:[NSURL fileURLWithPath:url]];
-        } else {
+        if([url hasPrefix:@"http"]) {// http
             playerItem = [[AVPlayerItem alloc] initWithURL:[NSURL URLWithString:url]];
+        } else if([url hasPrefix:@"/"]) {// sdcard
+            playerItem = [[AVPlayerItem alloc] initWithURL:[NSURL fileURLWithPath:url]];
+        } else {// 工程目录 相当于Android里面的Assets
+            NSArray *listItems = [url componentsSeparatedByString:@"."];
+            NSString *resName = [@"" stringByAppendingString:listItems[0]];// todo：resources 加入不了？
+            NSString *path = [[NSBundle mainBundle] pathForResource:resName ofType:@"mp3"];
+            playerItem = [[AVPlayerItem alloc] initWithURL:[NSURL fileURLWithPath:path]];
         }
         lastUrl = url;
-        
         id anobserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVPlayerItemDidPlayToEndTimeNotification
                                                                           object:playerItem
                                                                            queue:nil
                                                                       usingBlock:^(NSNotification* note){
                                                                           [self stop];
-                                                                          [_channel invokeMethod:@"audio.onComplete" arguments:nil];
+                                                                          [resources removeObject:url];
+                                                                          if([resources count] > 0) {
+                                                                              NSString* url = [resources firstObject];
+                                                                              [self play:url];
+                                                                              [_channel invokeMethod:@"audio.onComplete" arguments:nil];
+                                                                          }
                                                                       }];
         [observers addObject:anobserver];
         

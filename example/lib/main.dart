@@ -35,13 +35,15 @@ class _MyAppState extends State<MyApp> {
 //    list.add("CASE.mp3");
 //    list.add("BODE.mp3");
     // list.add("http://ra01.sycdn.kuwo.cn/resource/n3/32/56/3260586875.mp3");
-    list.add("ADAN.mp3");
-    list.add(await FileUtils.getPathByName("username/CODY.mp3"));
-    list.add(await FileUtils.getPathByName("username/ALEX.mp3"));
-    list.add(await FileUtils.getPathByName("username/ABEL.mp3"));
-    list.add(await FileUtils.getPathByName("username/COLE.mp3"));
-    list.add(await FileUtils.getPathByName("username/COLBY.mp3"));
-    list.add("http://ra01.sycdn.kuwo.cn/resource/n3/32/56/3260586875.mp3");
+    // list.add("ADAN.mp3");
+//    list.add(await FileUtils.getPathByName("username/CODY.mp3"));
+//    list.add(await FileUtils.getPathByName("username/ALEX.mp3"));
+//    list.add(await FileUtils.getPathByName("username/ABEL.mp3"));
+//    list.add(await FileUtils.getPathByName("username/COLE.mp3"));
+//    list.add(await FileUtils.getPathByName("username/COLBY.mp3"));
+    list.add("034.mp3");
+    list.add("035.mp3");
+    // list.add("http://ra01.sycdn.kuwo.cn/resource/n3/32/56/3260586875.mp3");
     var url = "http://ra01.sycdn.kuwo.cn/resource/n3/32/56/3260586875.mp3";
     MediaPlayUtils.play(list);
   }
