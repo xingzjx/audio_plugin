@@ -46,6 +46,7 @@ NSMutableArray *resources;
                                       if([obj isKindOfClass:[NSString class]]) {
                                           // int isLocal = [call.arguments[@"isLocal"] intValue];
                                           NSString *url = call.arguments[@"url"];
+                                          resources = [NSMutableArray arrayWithCapacity:1];
                                           [resources addObject:url];
                                           result(nil);
                                       } else if([obj isKindOfClass:[NSMutableArray class]]) {
@@ -91,6 +92,7 @@ NSMutableArray *resources;
 }
 
 - (void)play:(NSString*)url {
+    NSLog(@"============================> play");
     if (![url isEqualToString:lastUrl]) {
         [playerItem removeObserver:self
                         forKeyPath:@"player.currentItem.status"];
