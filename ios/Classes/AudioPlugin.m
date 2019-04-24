@@ -109,7 +109,9 @@ NSMutableArray *resources;
             NSArray *listItems = [url componentsSeparatedByString:@"."];
             NSString *resName = [@"" stringByAppendingString:listItems[0]];// todo：resources 加入不了？
             NSString *path = [[NSBundle mainBundle] pathForResource:resName ofType:@"mp3"];
-            playerItem = [[AVPlayerItem alloc] initWithURL:[NSURL fileURLWithPath:path]];
+            if(path!=nil) {
+                playerItem = [[AVPlayerItem alloc] initWithURL:[NSURL fileURLWithPath:path]];
+            }
         }
         lastUrl = url;
         id anobserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVPlayerItemDidPlayToEndTimeNotification

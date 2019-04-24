@@ -13,8 +13,7 @@
 		3B80C3941E831B6300D905FE /* App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B80C3931E831B6300D905FE /* App.framework */; };
 		3B80C3951E831B6300D905FE /* App.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B80C3931E831B6300D905FE /* App.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		544CC26AA30D4B514C431217 /* libPods-Runner.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A015924CFB87CB82D06BF722 /* libPods-Runner.a */; };
-		7C4E8C20226EEB840051FB81 /* 034.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7C4E8C1F226EEB840051FB81 /* 034.mp3 */; };
-		7C9F1E61226DD3A700B96428 /* 035.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7C9F1E60226DD3A700B96428 /* 035.mp3 */; };
+		7C7122B0227056D1006571C8 /* 008.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7C7122AF227056D1006571C8 /* 008.mp3 */; };
 		9705A1C61CF904A100538489 /* Flutter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9740EEBA1CF902C7004384FC /* Flutter.framework */; };
 		9705A1C71CF904A300538489 /* Flutter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9740EEBA1CF902C7004384FC /* Flutter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9740EEB41CF90195004384FC /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9740EEB21CF90195004384FC /* Debug.xcconfig */; };
@@ -49,8 +48,9 @@
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		7AFFD8ED1D35381100E5BB4D /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7AFFD8EE1D35381100E5BB4D /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		7C4E8C1F226EEB840051FB81 /* 034.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = 034.mp3; path = "../../../../../../../Desktop/Discovery/demo材料/assets/034.mp3"; sourceTree = "<group>"; };
-		7C9F1E60226DD3A700B96428 /* 035.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = 035.mp3; path = "../../../../../../../Desktop/Discovery/demo材料/assets/035.mp3"; sourceTree = "<group>"; };
+		7C7122AC227055D8006571C8 /* 035.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 035.mp3; sourceTree = "<group>"; };
+		7C7122AD227055DB006571C8 /* 034.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 034.mp3; sourceTree = "<group>"; };
+		7C7122AF227056D1006571C8 /* 008.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = 008.mp3; path = "../../../../../../../Desktop/Discovery/demo材料/assets/008.mp3"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		9740EEBA1CF902C7004384FC /* Flutter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flutter.framework; path = Flutter/Flutter.framework; sourceTree = "<group>"; };
@@ -82,6 +82,23 @@
 			children = (
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		7C7122AB227055B7006571C8 /* audio */ = {
+			isa = PBXGroup;
+			children = (
+				7C7122AD227055DB006571C8 /* 034.mp3 */,
+				7C7122AC227055D8006571C8 /* 035.mp3 */,
+			);
+			name = audio;
+			sourceTree = "<group>";
+		};
+		7C7122AE227056A9006571C8 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				7C7122AF227056D1006571C8 /* 008.mp3 */,
+			);
+			name = test;
 			sourceTree = "<group>";
 		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
@@ -120,8 +137,8 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
-				7C4E8C1F226EEB840051FB81 /* 034.mp3 */,
-				7C9F1E60226DD3A700B96428 /* 035.mp3 */,
+				7C7122AE227056A9006571C8 /* test */,
+				7C7122AB227055B7006571C8 /* audio */,
 				7AFFD8ED1D35381100E5BB4D /* AppDelegate.h */,
 				7AFFD8EE1D35381100E5BB4D /* AppDelegate.m */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
@@ -215,10 +232,9 @@
 			files = (
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
+				7C7122B0227056D1006571C8 /* 008.mp3 in Resources */,
 				9740EEB41CF90195004384FC /* Debug.xcconfig in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
-				7C4E8C20226EEB840051FB81 /* 034.mp3 in Resources */,
-				7C9F1E61226DD3A700B96428 /* 035.mp3 in Resources */,
 				2D5378261FAA1A9400D5DBA9 /* flutter_assets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 			);

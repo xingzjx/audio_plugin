@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
     list.add("035.mp3");
     // list.add("http://ra01.sycdn.kuwo.cn/resource/n3/32/56/3260586875.mp3");
     var url = "http://ra01.sycdn.kuwo.cn/resource/n3/32/56/3260586875.mp3";
-    MediaPlayUtils.play("035.mp3");
+    MediaPlayUtils.play("000.mp3");
   }
 
   Future<void> stop() async {
