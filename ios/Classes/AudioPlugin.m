@@ -102,13 +102,18 @@ NSMutableArray *resources;
         }
         observers = nil;
         if([url hasPrefix:@"http"]) {// http
+            NSLog(@"path:%@", url);
             playerItem = [[AVPlayerItem alloc] initWithURL:[NSURL URLWithString:url]];
         } else if([url hasPrefix:@"/"]) {// sdcard
+            NSString * documentPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+            url = [documentPath stringByAppendingString:url];
+            NSLog(@"path:%@", url);
             playerItem = [[AVPlayerItem alloc] initWithURL:[NSURL fileURLWithPath:url]];
         } else {// 工程目录 相当于Android里面的Assets
             NSArray *listItems = [url componentsSeparatedByString:@"."];
             NSString *resName = [@"" stringByAppendingString:listItems[0]];// todo：resources 加入不了？
             NSString *path = [[NSBundle mainBundle] pathForResource:resName ofType:@"mp3"];
+            NSLog(@"path:%@", path);
             if(path!=nil) {
                 playerItem = [[AVPlayerItem alloc] initWithURL:[NSURL fileURLWithPath:path]];
             }
